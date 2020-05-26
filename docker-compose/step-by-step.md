@@ -1,5 +1,7 @@
 # Quick Step by Step
 
+## Starting the Source Connector
+
 Quick steps to run this folder's content, required to open multiple terminals when needed.
 
 -  Check out this repo. 
@@ -38,12 +40,37 @@ for validation as this is a source connector.
 
 `docker exec -it kafka /opt/kafka/bin/kafka-console-consumer.sh --bootstrap-server kafka:9092 --topic simple-connect --from-beginning`
 
-- This will create a folder connect-input-file in the same level as the docker-compose.yml file where inside the connector
-expects to find the file where it will read lines from and publish to kafka, enter this directory and create a file named
-`my-source-file.txt`.
+- A sample data file should already exist in `connect-input-file` but if it isn't there, create a folder connect-input-file in the same level as the docker-compose.yml file where inside the connector expects to find the file where it will read lines from and publish to kafka, enter this directory and create a file named `my-source-file.txt`.
 
 `cd connect-input-file && touch my-source-file.txt`
 
 - Open the file with your preferred text editor and add lines to it and notice that the lines are automatically read by
 the connector and published to the kafka topic where we have attached our console client every time you save the file,
 it relies in a new line / blank line at the end of the file, so make sure to add it in order for it to work properly.
+
+## Starting the Sink Connector
+
+A separate Dockerfile and Docker Compose file for the sink connector are provided in the `sink-connector` directory. Complete the following steps to get it up and running.
+
+- Find the name of the name of the existing network being used by kafka
+
+`docker network ls`
+
+	NETWORK ID          NAME                                 DRIVER              SCOPE
+	24eebf964a9e        bridge                               bridge              local
+	05b054e54bae        docker_sonarnet                      bridge              local
+	b93a229f4eb2        host                                 host                local
+	3bd1a87e56e1        kafka-connect-crash-course_default   bridge              local
+	6700c111a17f        none                                 null                local
+
+- Initialize the containers for the (distributed) sink connector
+
+`docker-compose up --no-start`
+
+- Connect the sink connector's network to the existing kafka network
+
+`docker network connect kafka-connect-crash-course_default connect-distributed` 
+
+- Complete the startup of the sink connector
+
+`docker-compose up`

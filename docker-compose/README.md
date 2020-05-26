@@ -1,5 +1,5 @@
 # About this folder content
 
-This is the source code used in the blog post in dev.to about kafka connect.
+The original content of this folder was copied from [Stockgeeks](https://github.com/stockgeeks/docker-compose) with the hope of expanding the connect-standalone setup into a setup for connect-distributed.
 
-[Kafka Connect - Crash Course](https://dev.to/thegroo/kafka-connect-crash-course-1chd)
+The full walkthrough can be seen at: [Kafka Connect TBD](https://joelforjava.com/TBD)
