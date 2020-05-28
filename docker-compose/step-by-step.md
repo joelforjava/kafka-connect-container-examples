@@ -83,7 +83,7 @@ A separate Dockerfile and Docker Compose file for the sink connector are provide
 
 - Push this JSON file content to the REST API
 
-`curl -XPUT -H "Content-Type: application/json"  --data "@Users/jcochran/dev/work/joelforjava/projects/kafka-connect-container-examples/docker-compose/distributed-connector/connect-file-sink.json" http://localhost:18083/connectors/file-sink-connector/config | jq`
+`curl -XPUT -H "Content-Type: application/json"  --data "@connect-file-sink.json" http://localhost:18083/connectors/file-sink-connector/config | jq`
 
 - If all goes well, you should see an output similar to below (thanks to `jq`)
 
