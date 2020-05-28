@@ -6,11 +6,11 @@ Quick steps to run this folder's content, required to open multiple terminals wh
 
 -  Check out this repo. 
 
-`git clone git@github.com:stockgeeks/docker-compose.git`
+`git clone git@github.com:joelforjava/kafka-connect-container-examples.git`
 
--  Navigate to `kafka-connect-crash-course` directory.
+-  Navigate to `docker-compose` directory.
 
-`cd docker-compose/kafka-connect-crash-course`
+`cd docker-compose`
 
 -  Build the docker images as the connect image is required to build to include connector standalone configurations, we 
 could have used a map to provide the files but building it for now.
@@ -83,7 +83,7 @@ A separate Dockerfile and Docker Compose file for the sink connector are provide
 
 - Push this JSON file content to the REST API
 
-`curl -XPUT -H "Content-Type: application/json"  --data "@/Volumes/Macintosh Data/dev/learn/kafka-connect/docker-compose/kafka-connect-distributed/config.json" http://localhost:18083/connectors/file-sink-connector/config | jq`
+`curl -XPUT -H "Content-Type: application/json"  --data "@Users/jcochran/dev/work/joelforjava/projects/kafka-connect-container-examples/docker-compose/distributed-connector/connect-file-sink.json" http://localhost:18083/connectors/file-sink-connector/config | jq`
 
 - If all goes well, you should see an output similar to below (thanks to `jq`)
 
