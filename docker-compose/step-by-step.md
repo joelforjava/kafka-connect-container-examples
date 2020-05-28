@@ -56,21 +56,55 @@ A separate Dockerfile and Docker Compose file for the sink connector are provide
 
 `docker network ls`
 
-	NETWORK ID          NAME                                 DRIVER              SCOPE
-	24eebf964a9e        bridge                               bridge              local
-	05b054e54bae        docker_sonarnet                      bridge              local
-	b93a229f4eb2        host                                 host                local
-	3bd1a87e56e1        kafka-connect-crash-course_default   bridge              local
-	6700c111a17f        none                                 null                local
+    NETWORK ID          NAME                                 DRIVER              SCOPE
+    24eebf964a9e        bridge                               bridge              local
+    05b054e54bae        docker_sonarnet                      bridge              local
+    b93a229f4eb2        host                                 host                local
+    3bd1a87e56e1        kafka-connect-crash-course_default   bridge              local
+    6700c111a17f        none                                 null                local
 
 - Initialize the containers for the (distributed) sink connector
 
 `docker-compose up --no-start`
 
-- Connect the sink connector's network to the existing kafka network
+- Connect the sink connector's network to the existing kafka network (`kafka-connect-crash-course_default` above)
 
 `docker network connect kafka-connect-crash-course_default connect-distributed` 
 
 - Complete the startup of the sink connector
 
 `docker-compose up`
+
+- Query the Connect REST API to verify it is running
+
+`curl http://localhost:18083/connectors`
+
+- Convert `distributed-connector/connect-file-sink.properties` to JSON format. I've provided a version of this as `connect-file-sink.json`.
+
+- Push this JSON file content to the REST API
+
+`curl -XPUT -H "Content-Type: application/json"  --data "@/Volumes/Macintosh Data/dev/learn/kafka-connect/docker-compose/kafka-connect-distributed/config.json" http://localhost:18083/connectors/file-sink-connector/config | jq`
+
+- If all goes well, you should see an output similar to below (thanks to `jq`)
+
+    {
+      "name": "file-sink-connector",
+      "config": {
+        "name": "file-sink-connector",
+        "connector.class": "org.apache.kafka.connect.file.FileStreamSinkConnector",
+        "tasks.max": "1",
+        "topics": "simple-connect",
+        "file": "/tmp/my-output-file.txt",
+        "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+        "value.converter": "org.apache.kafka.connect.storage.StringConverter"
+      },
+      "tasks": [
+        {
+          "connector": "file-sink-connector",
+          "task": 0
+        }
+      ],
+      "type": "sink"
+    }
+
+- If data exists on the topic, then you should see data output to `distributed-connector/connect-output-file`.
