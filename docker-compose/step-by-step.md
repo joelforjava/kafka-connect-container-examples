@@ -71,6 +71,7 @@ it relies in a new line / blank line at the end of the file, so make sure to add
 
 - If all goes well, you should see an output similar to below (thanks to `jq`)
 
+```yaml
     {
       "name": "file-sink-connector",
       "config": {
@@ -90,6 +91,7 @@ it relies in a new line / blank line at the end of the file, so make sure to add
       ],
       "type": "sink"
     }
+```
 
 - If data exists on the topic, then you should see data output to `distributed-connector/connect-output-file/my-output-file.txt`.
 
