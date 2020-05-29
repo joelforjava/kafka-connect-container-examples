@@ -1,0 +1,9 @@
+{
+    "connector.class": "org.apache.kafka.connect.file.FileStreamSinkConnector",
+    "name": "file-sink-connector",
+    "file": "/tmp/my-output-file.txt",
+    "value.converter": "org.apache.kafka.connect.storage.StringConverter",
+    "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+    "tasks.max": "3",
+    "topics": "simple-connect"
+}

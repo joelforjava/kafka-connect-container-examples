@@ -39,7 +39,7 @@ services:
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       # we create topic with 1 partition and 1 replica as it's for local dev and we're running a single broker instance.
-      KAFKA_CREATE_TOPICS: 'simple-connect:1:1'
+      KAFKA_CREATE_TOPICS: 'simple-connect:3:1'
       KAFKA_LOG4J_LOGGERS: >-
         kafka.controller=INFO,
         kafka.producer.async.DefaultEventHandler=INFO,
@@ -54,7 +54,7 @@ services:
 
   connect-standalone:
     build:
-      context: .
+      context: ./standalone
       dockerfile: Dockerfile
     container_name: connect-standalone
     ports:
@@ -62,4 +62,18 @@ services:
     depends_on:
       - kafka
     volumes:
-      - ./connect-input-file:/tmp
+      - ./standalone/connect-input-file:/tmp
+
+  connect-distributed:
+    build:
+      context: ./distributed
+      dockerfile: Dockerfile
+    # container_name: connect-distributed
+    ports:
+      - 8083
+    depends_on:
+      - kafka
+    deploy:
+      replicas: 4
+    volumes:
+      - ./distributed/connect-output-file:/tmp
