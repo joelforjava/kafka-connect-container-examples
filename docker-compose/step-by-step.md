@@ -93,7 +93,7 @@ it relies in a new line / blank line at the end of the file, so make sure to add
     }
 ```
 
-- If data exists on the topic, then you should see data output to `distributed-connector/connect-output-file/my-output-file.txt`.
+- If data exists on the topic, then you should see data output to `distributed/connect-output-file/my-output-file.txt`.
 
 - Furthermore, you can check the consumer groups via `kafka-consumer-groups`
 
